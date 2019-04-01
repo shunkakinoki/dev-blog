@@ -36,7 +36,10 @@ plugins:
   - jekyll-feed
   - jekyll-gist
   - jekyll-paginate
+  - jekyll-postfiles
 
 sidebar_home_link:  true
 
 google_analytics: UA-134813374-7
+
+permalink: /:title/
