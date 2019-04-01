@@ -256,7 +256,7 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p><img src="http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png" srcset="http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png 395w"></p>
+<p><img src="assets/fastai_v3/callbacks/1.png" /></p>
 
 <p>Leslie Smith氏が考案なさった<a href="https://www.jeremyjordan.me/nn-learning-rate/">learning rate finder</a>を用いて最適な学習率を探し出すことができます。<br />
 この場合、グラフの谷底の少し後ろの<code class="highlighter-rouge">lr = 2e-2</code>が最適なLearning Rateだそう。（後日記事にて詳細を解説します。）</p>
@@ -271,7 +271,7 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_lr</span><span class="p">(</span><span class="n">show_moms</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png" srcset="http://localhost:4000/generated/assets/fastai_v3/callbacks/2-400by138-e82ab3.png 400w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-600by207-e82ab3.png 600w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png 732w"></p>
+<p><img src="assets/fastai_v3/callbacks/2.png" /></p>
 
 <p>詳しくは<a href="https://docs.fast.ai/callbacks.one_cycle.html">こちら</a>を参照。<br />
 要は、Learning Rate と Momentum を反比例してtrainingしていく感じだと思う。</p>

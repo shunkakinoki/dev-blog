@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-04-01T22:45:51+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Shun Kakinoki</title><subtitle>Personal Code Blog by Shun Kakinoki</subtitle><author><name>Shun Kakinoki</name></author><entry><title type="html">Callbacks</title><link href="http://localhost:4000/callbacks/" rel="alternate" type="text/html" title="Callbacks" /><published>2019-03-08T00:00:00+08:00</published><updated>2019-03-08T00:00:00+08:00</updated><id>http://localhost:4000/callbacks</id><content type="html" xml:base="http://localhost:4000/callbacks/">&lt;h1 id=&quot;概要&quot;&gt;概要&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-04-01T23:02:01+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Shun Kakinoki</title><subtitle>Personal Code Blog by Shun Kakinoki</subtitle><author><name>Shun Kakinoki</name></author><entry><title type="html">Callbacks</title><link href="http://localhost:4000/callbacks/" rel="alternate" type="text/html" title="Callbacks" /><published>2019-03-08T00:00:00+08:00</published><updated>2019-03-08T00:00:00+08:00</updated><id>http://localhost:4000/callbacks</id><content type="html" xml:base="http://localhost:4000/callbacks/">&lt;h1 id=&quot;概要&quot;&gt;概要&lt;/h1&gt;
 
 &lt;p&gt;本記事はfast.aiのwikiの&lt;a href=&quot;https://docs.fast.ai/callbacks.html#List-of-callbacks&quot;&gt;Callbacks&lt;/a&gt;ページの要約となります。&lt;br /&gt;
 筆者の理解した範囲内で記載します。&lt;/p&gt;
@@ -42,7 +42,7 @@
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recorder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png&quot; srcset=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png 395w&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/fastai_v3/callbacks/1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Leslie Smith氏が考案なさった&lt;a href=&quot;https://www.jeremyjordan.me/nn-learning-rate/&quot;&gt;learning rate finder&lt;/a&gt;を用いて最適な学習率を探し出すことができます。&lt;br /&gt;
 この場合、グラフの谷底の少し後ろの&lt;code class=&quot;highlighter-rouge&quot;&gt;lr = 2e-2&lt;/code&gt;が最適なLearning Rateだそう。（後日記事にて詳細を解説します。）&lt;/p&gt;
@@ -57,7 +57,7 @@
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recorder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot_lr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show_moms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png&quot; srcset=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/2-400by138-e82ab3.png 400w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-600by207-e82ab3.png 600w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png 732w&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/fastai_v3/callbacks/2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;詳しくは&lt;a href=&quot;https://docs.fast.ai/callbacks.one_cycle.html&quot;&gt;こちら&lt;/a&gt;を参照。&lt;br /&gt;
 要は、Learning Rate と Momentum を反比例してtrainingしていく感じだと思う。&lt;/p&gt;
