@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-04-01T22:45:51+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Shun Kakinoki</title><subtitle>Personal Code Blog by Shun Kakinoki</subtitle><author><name>Shun Kakinoki</name></author><entry><title type="html">Callbacks</title><link href="http://localhost:4000/callbacks/" rel="alternate" type="text/html" title="Callbacks" /><published>2019-03-08T00:00:00+08:00</published><updated>2019-03-08T00:00:00+08:00</updated><id>http://localhost:4000/callbacks</id><content type="html" xml:base="http://localhost:4000/callbacks/">&lt;h1 id=&quot;概要&quot;&gt;概要&lt;/h1&gt;
+
+&lt;p&gt;本記事はfast.aiのwikiの&lt;a href=&quot;https://docs.fast.ai/callbacks.html#List-of-callbacks&quot;&gt;Callbacks&lt;/a&gt;ページの要約となります。&lt;br /&gt;
+筆者の理解した範囲内で記載します。&lt;/p&gt;
+
+&lt;p&gt;公式ドキュメントには、&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fastai's training loop is highly extensible, with a rich callback system.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;とありますが、要は
+&lt;strong&gt;fast.aiのトレーニングループの中において、拡張性の高いcallbackシステムが組み込まれています。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Every callback that is passed to Learner with the callback_fns parameter will be automatically stored as an attribute.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;仕組みとしては、Learnerに&lt;code class=&quot;highlighter-rouge&quot;&gt;callback_fns&lt;/code&gt;として引き渡された全てのcallbackは自動的に属性として呼び出すことができるようになっているらしい。&lt;/p&gt;
+
+&lt;p&gt;それでは、&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;LrFinder&lt;/li&gt;
+  &lt;li&gt;OneCycleScheduler&lt;/li&gt;
+  &lt;li&gt;MixUpCallback&lt;/li&gt;
+  &lt;li&gt;CSVLogger&lt;/li&gt;
+  &lt;li&gt;SaveModelCallback&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;以上の5つの実例を見ていきましょう。&lt;/p&gt;
+
+&lt;h1 id=&quot;lrfinder&quot;&gt;LrFinder&lt;/h1&gt;
+
+&lt;p&gt;MNISTデータを用いる場合、&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;untar_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;URLs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MNIST_SAMPLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ImageDataBunch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_folder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;simple_learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_cnn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accuracy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lr_find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recorder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png&quot; srcset=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/1-395by266-a45769.png 395w&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Leslie Smith氏が考案なさった&lt;a href=&quot;https://www.jeremyjordan.me/nn-learning-rate/&quot;&gt;learning rate finder&lt;/a&gt;を用いて最適な学習率を探し出すことができます。&lt;br /&gt;
+この場合、グラフの谷底の少し後ろの&lt;code class=&quot;highlighter-rouge&quot;&gt;lr = 2e-2&lt;/code&gt;が最適なLearning Rateだそう。（後日記事にて詳細を解説します。）&lt;/p&gt;
+
+&lt;h1 id=&quot;onecyclescheduler&quot;&gt;OneCycleScheduler&lt;/h1&gt;
+
+&lt;p&gt;Leslie Smith氏の&lt;a href=&quot;https://sgugger.github.io/the-1cycle-policy.html&quot;&gt;1cycle annealing&lt;/a&gt;を実装したもの。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit_one_cycle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recorder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot_lr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show_moms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png&quot; srcset=&quot;http://localhost:4000/generated/assets/fastai_v3/callbacks/2-400by138-e82ab3.png 400w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-600by207-e82ab3.png 600w, http://localhost:4000/generated/assets/fastai_v3/callbacks/2-732by252-e82ab3.png 732w&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;詳しくは&lt;a href=&quot;https://docs.fast.ai/callbacks.one_cycle.html&quot;&gt;こちら&lt;/a&gt;を参照。&lt;br /&gt;
+要は、Learning Rate と Momentum を反比例してtrainingしていく感じだと思う。&lt;/p&gt;
+
+&lt;h1 id=&quot;mixupcallback&quot;&gt;MixUpCallback&lt;/h1&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_cnn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accuracy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mixup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1710.09412&quot;&gt;Mixup: Beyond Empirical Risk Minimization&lt;/a&gt;も同様に実装することができる。&lt;/p&gt;
+
+&lt;h1 id=&quot;csvlogger&quot;&gt;CSVLogger&lt;/h1&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_cnn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accuracy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error_rate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;callback_fns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CSVLogger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csv_logger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_logged_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;callback_fns&lt;/code&gt;に&lt;code class=&quot;highlighter-rouge&quot;&gt;[CSVLogger]&lt;/code&gt;を付けるだけでこんな簡単に結果をcsvに出力できる。&lt;/p&gt;
+
+&lt;h1 id=&quot;savemodelcallback&quot;&gt;SaveModelCallback&lt;/h1&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Learner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_cnn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accuracy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit_one_cycle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1e-4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;callbacks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SaveModelCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;learn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;every&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'epoch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;monitor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'accuracy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~/.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastai&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mnist_sample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bestmodel_1.pth  bestmodel_2.pth  bestmodel_3.pth&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;こんな感じで毎epoch、もしくは最適なmodelを自動的に保存することができます！！すげえ！！&lt;/p&gt;
+
+&lt;h1 id=&quot;最後に&quot;&gt;最後に&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;他にも面白いcallbacksがあったのでpart2で紹介できていければと思います。&lt;/li&gt;
+  &lt;li&gt;Learning Rate Finder や Mixup などの理論的背景を深掘りしていきたい。&lt;/li&gt;
+  &lt;li&gt;自作のモデルのチュートリアルをやってみる。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;最後に&lt;br /&gt;
+間違いやご指摘などが御座いましたらご教示願います！&lt;/p&gt;</content><author><name>Shun Kakinoki</name></author><category term="Python" /><summary type="html">概要 本記事はfast.aiのwikiのCallbacksページの要約となります。 筆者の理解した範囲内で記載します。 公式ドキュメントには、 fastai's training loop is highly extensible, with a rich callback system. とありますが、要は fast.aiのトレーニングループの中において、拡張性の高いcallbackシステムが組み込まれています。 Every callback that is passed to Learner with the callback_fns parameter will be automatically stored as an attribute. 仕組みとしては、Learnerにcallback_fnsとして引き渡された全てのcallbackは自動的に属性として呼び出すことができるようになっているらしい。 それでは、 LrFinder OneCycleScheduler MixUpCallback CSVLogger SaveModelCallback 以上の5つの実例を見ていきましょう。 LrFinder MNISTデータを用いる場合、 path = untar_data(URLs.MNIST_SAMPLE) data = ImageDataBunch.from_folder(path) def simple_learner(): return Learner(data, simple_cnn((3,16,16,2)), metrics=[accuracy]) learn = simple_learner() learn.lr_find() learn.recorder.plot() Leslie Smith氏が考案なさったlearning rate finderを用いて最適な学習率を探し出すことができます。 この場合、グラフの谷底の少し後ろのlr = 2e-2が最適なLearning Rateだそう。（後日記事にて詳細を解説します。） OneCycleScheduler Leslie Smith氏の1cycle annealingを実装したもの。 learn.fit_one_cycle(3, lr) learn.recorder.plot_lr(show_moms=True) 詳しくはこちらを参照。 要は、Learning Rate と Momentum を反比例してtrainingしていく感じだと思う。 MixUpCallback learn = Learner(data, simple_cnn((3, 16, 16, 2)), metrics=[accuracy]).mixup() Mixup: Beyond Empirical Risk Minimizationも同様に実装することができる。 CSVLogger learn = Learner(data, simple_cnn((3, 16, 16, 2)), metrics=[accuracy, error_rate], callback_fns=[CSVLogger]) learn.fit(3) learn.csv_logger.read_logged_file() callback_fnsに[CSVLogger]を付けるだけでこんな簡単に結果をcsvに出力できる。 SaveModelCallback learn = Learner(data, simple_cnn((3,16,16,2)), metrics=accuracy) learn.fit_one_cycle(3,1e-4, callbacks=[SaveModelCallback(learn, every='epoch', monitor='accuracy')]) !ls ~/.fastai/data/mnist_sample/models bestmodel_1.pth bestmodel_2.pth bestmodel_3.pth こんな感じで毎epoch、もしくは最適なmodelを自動的に保存することができます！！すげえ！！ 最後に 他にも面白いcallbacksがあったのでpart2で紹介できていければと思います。 Learning Rate Finder や Mixup などの理論的背景を深掘りしていきたい。 自作のモデルのチュートリアルをやってみる。 最後に 間違いやご指摘などが御座いましたらご教示願います！</summary></entry></feed>
