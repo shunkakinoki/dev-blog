@@ -3,8 +3,6 @@ layout: post
 title: "Callbacks"
 categories:
   - fast.ai
-tags:
-  - Python
 ---
 
 # 概要
