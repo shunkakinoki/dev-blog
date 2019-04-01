@@ -59,7 +59,7 @@ DataBlockを実際に読み込んで出力してみましょう
 data.show_batch(3, figsize=(6,6), hide_axis=False)
 ```
 
-<img src="assets/fastai_v3/datablock/1.png">
+![1]({{ site.baseurl }}/assets/fastai_v3/datablock/1.png)
 
 すげええええ、本当にたった数行でtrain/validation/testに分けてdata augmentation用いたdatabunchを作成できた！
 
@@ -89,7 +89,7 @@ data = (ImageList.from_csv(planet, 'labels.csv', folder='train', suffix='.jpg')
 data.show_batch(rows=2, figsize=(9,7))
 ```
 
-<img src="assets/fastai_v3/datablock/2.png">
+![2]({{ site.baseurl }}/assets/fastai_v3/datablock/2.png)
 
 きちんとmulti-label-classificationが読み込めていますね。
 
@@ -132,7 +132,7 @@ data = (SegmentationItemList.from_folder(path_img)
 data.show_batch(rows=2, figsize=(7,5))
 ```
 
-<img src="assets/fastai_v3/datablock/3.png">
+![3]({{ site.baseurl }}/assets/fastai_v3/datablock/3.png)
 
 簡単すぎ、、なのにすげええええ
 どんどんいきます。
@@ -163,7 +163,7 @@ data = (ObjectItemList.from_folder(coco)
 data.show_batch(rows=2, ds_type=DatasetType.Valid, figsize=(6,6))
 ```
 
-<img src="assets/fastai_v3/datablock/4.png">
+![4]({{ site.baseurl }}/assets/fastai_v3/datablock/4.png)
 
 細かい設定をいじって非常にフレキシブルなAPIですね
 
@@ -192,7 +192,7 @@ data_lm = (TextList.from_csv(imdb, 'texts.csv', cols='text')
 data_lm.show_batch()
 ```
 
-<img src="assets/fastai_v3/datablock/5.png">
+![5]({{ site.baseurl }}/assets/fastai_v3/datablock/5.png)
 
 これだけでLanguage Modelを鍛えることができます。
 
@@ -217,7 +217,7 @@ data_clas = (TextList.from_csv(imdb, 'texts.csv', cols='text')
 data_clas.show_batch()
 ```
 
-<img src="assets/fastai_v3/datablock/6.png">
+![6]({{ site.baseurl }}/assets/fastai_v3/datablock/6.png)
 
 ### 7. [Text Classification] IMDBを用いた例を挙げます。
 
@@ -249,7 +249,7 @@ data = (TabularList.from_df(df, path=adult, cat_names=cat_names, cont_names=cont
 data.show_batch()
 ```
 
-<img src="assets/fastai_v3/datablock/7.png">
+![7]({{ site.baseurl }}/assets/fastai_v3/datablock/7.png)
 
 # 個人的な振り返り
 
