@@ -46,3 +46,5 @@ permalink: /:title/
 
 picture:
   relative_url: false
+
+excerpt_separator: <!–break–>
