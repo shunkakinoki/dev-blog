@@ -52,7 +52,7 @@ learn.lr_find()
 learn.recorder.plot()
 ```
 
-![1](1.png)  
+{% picture assets/fastai_v3/callbacks/1.png %}
 
 Leslie Smith氏が考案なさった[learning rate finder](https://www.jeremyjordan.me/nn-learning-rate/)を用いて最適な学習率を探し出すことができます。  
 この場合、グラフの谷底の少し後ろの`lr = 2e-2`が最適なLearning Rateだそう。（後日記事にて詳細を解説します。）  
@@ -69,7 +69,7 @@ learn.fit_one_cycle(3, lr)
 learn.recorder.plot_lr(show_moms=True)
 ```
 
-![2](2.png)  
+{% picture assets/fastai_v3/callbacks/2.png %}
 
 詳しくは[こちら](https://docs.fast.ai/callbacks.one_cycle.html)を参照。  
 要は、Learning Rate と Momentum を反比例してtrainingしていく感じだと思う。

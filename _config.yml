@@ -43,3 +43,6 @@ sidebar_home_link:  true
 google_analytics: UA-134813374-7
 
 permalink: /:title/
+
+picture:
+  relative_url: false

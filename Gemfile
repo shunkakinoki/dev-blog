@@ -15,6 +15,7 @@ source 'https://rubygems.org'
 group :jekyll_plugins do
   gem 'jekyll-postfiles',"~> 3.0.0" 
   gem "jekyll-feed", "~> 0.6"
+  gem 'jekyll-picture-tag', git: 'https://github.com/robwierzbowski/jekyll-picture-tag/'
 end
 
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
