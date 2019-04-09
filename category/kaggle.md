@@ -1,5 +1,5 @@
 ---
 layout: category
 title: Kaggle 
-category: kaggle
+category: Kaggle
 ---
