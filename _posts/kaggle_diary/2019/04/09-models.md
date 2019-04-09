@@ -1,3 +1,12 @@
+---
+layout: post
+title: "【Kaggle日記】 2019/04/09"
+categories:
+  - Kaggle
+tags:
+  - ML
+---
+
 # 【Kaggle日記】 2019/04/09
 
 文系大学3年生が  
